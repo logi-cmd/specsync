@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { localize } from './i18n';
 
 export async function showWelcomePage(context: vscode.ExtensionContext, force: boolean = false): Promise<void> {
     const hasShownWelcome = context.globalState.get<boolean>('specsync.welcomeShown', false);
@@ -9,7 +10,7 @@ export async function showWelcomePage(context: vscode.ExtensionContext, force: b
     
     const panel = vscode.window.createWebviewPanel(
         'specsyncWelcome',
-        '欢迎使用 SpecSync',
+        localize('welcome.panel.title'),
         vscode.ViewColumn.One,
         { enableScripts: true }
     );
@@ -41,7 +42,7 @@ export async function showWelcomePage(context: vscode.ExtensionContext, force: b
 async function createExampleFiles(): Promise<void> {
     const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
     if (!workspaceFolder) {
-        vscode.window.showErrorMessage('请先打开一个工作区');
+        vscode.window.showErrorMessage(localize('error.create.example'));
         return;
     }
     
@@ -74,13 +75,13 @@ version: 1.0.0
         await vscode.workspace.fs.writeFile(specUri, Buffer.from(specContent, 'utf8'));
         await vscode.workspace.fs.writeFile(codeUri, Buffer.from(codeContent, 'utf8'));
         
-        vscode.window.showInformationMessage('示例文件已创建！运行 "SpecSync: Scan Sync" 开始检测');
+        vscode.window.showInformationMessage(localize('info.example.created'));
         
         // 打开示例文件
         const document = await vscode.workspace.openTextDocument(specUri);
         await vscode.window.showTextDocument(document);
     } catch (error) {
-        vscode.window.showErrorMessage(`创建示例文件失败: ${error}`);
+        vscode.window.showErrorMessage(localize('error.create.example'));
     }
 }
 

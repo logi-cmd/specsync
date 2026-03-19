@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { localize } from '../i18n';
 import { SpecSyncTreeItem } from './treeItem';
 import { ScanResult } from './types';
 
@@ -33,8 +34,8 @@ export class SpecSyncTreeProvider implements vscode.TreeDataProvider<SpecSyncTre
                 const label = element.label?.toString() || '';
                 let severity: 'high' | 'medium' | 'low';
                 
-                if (label.includes('HIGH')) severity = 'high';
-                else if (label.includes('MEDIUM')) severity = 'medium';
+                if (label.includes('HIGH') || label.includes(localize('severity.high'))) severity = 'high';
+                else if (label.includes('MEDIUM') || label.includes(localize('severity.medium'))) severity = 'medium';
                 else severity = 'low';
                 
                 return this.result.issues
@@ -48,48 +49,48 @@ export class SpecSyncTreeProvider implements vscode.TreeDataProvider<SpecSyncTre
         const items: SpecSyncTreeItem[] = [];
 
         // === SECTION 1: OVERVIEW ===
-        items.push(SpecSyncTreeItem.header('📊 SCAN OVERVIEW'));
-        items.push(SpecSyncTreeItem.stat('Total Issues', String(this.result.summary.total), 'list-unordered'));
-        items.push(SpecSyncTreeItem.stat('Spec Files', String(this.result.specCount), 'file-code'));
+        items.push(SpecSyncTreeItem.header('📊 ' + localize('tree.section.overview')));
+        items.push(SpecSyncTreeItem.stat(localize('tree.stat.total'), String(this.result.summary.total), 'list-unordered'));
+        items.push(SpecSyncTreeItem.stat(localize('tree.stat.specs'), String(this.result.specCount), 'file-code'));
         
         // Separator line effect with empty item
         if (this.result.summary.total > 0) {
             items.push(new SpecSyncTreeItem('', vscode.TreeItemCollapsibleState.None, 'empty'));
             
             // === SECTION 2: ISSUES BY SEVERITY ===
-            items.push(SpecSyncTreeItem.header('⚠️ ISSUES BY SEVERITY'));
+            items.push(SpecSyncTreeItem.header('⚠️ ' + localize('tree.section.issues')));
             
             if (this.result.summary.high > 0) {
-                items.push(SpecSyncTreeItem.category('HIGH PRIORITY', this.result.summary.high, 'high'));
+                items.push(SpecSyncTreeItem.category(`[${localize('severity.high')}] ` + localize('tree.priority.high'), this.result.summary.high, 'high'));
             }
             if (this.result.summary.medium > 0) {
-                items.push(SpecSyncTreeItem.category('MEDIUM PRIORITY', this.result.summary.medium, 'medium'));
+                items.push(SpecSyncTreeItem.category(`[${localize('severity.medium')}] ` + localize('tree.priority.medium'), this.result.summary.medium, 'medium'));
             }
             if (this.result.summary.low > 0) {
-                items.push(SpecSyncTreeItem.category('LOW PRIORITY', this.result.summary.low, 'low'));
+                items.push(SpecSyncTreeItem.category(`[${localize('severity.low')}] ` + localize('tree.priority.low'), this.result.summary.low, 'low'));
             }
         } else if (this.result.specCount > 0) {
             // No issues found
             items.push(new SpecSyncTreeItem('', vscode.TreeItemCollapsibleState.None, 'empty'));
-            items.push(SpecSyncTreeItem.empty('✅ All specs are in sync with code!'));
+            items.push(SpecSyncTreeItem.empty('✅ ' + localize('tree.status.synced')));
         } else {
             // No scan yet
             items.push(new SpecSyncTreeItem('', vscode.TreeItemCollapsibleState.None, 'empty'));
-            items.push(SpecSyncTreeItem.empty('Run "SpecSync: Scan Sync" to start'));
+            items.push(SpecSyncTreeItem.empty(localize('tree.status.start')));
         }
 
         // === SECTION 3: ACTIONS ===
         items.push(new SpecSyncTreeItem('', vscode.TreeItemCollapsibleState.None, 'empty'));
-        items.push(SpecSyncTreeItem.header('🚀 QUICK ACTIONS'));
+        items.push(SpecSyncTreeItem.header('🚀 ' + localize('tree.section.actions')));
         
-        const scanItem = new SpecSyncTreeItem('Scan Workspace', vscode.TreeItemCollapsibleState.None, 'summary');
+        const scanItem = new SpecSyncTreeItem(localize('tree.action.scan'), vscode.TreeItemCollapsibleState.None, 'summary');
         scanItem.iconPath = new vscode.ThemeIcon('play');
-        scanItem.command = { command: 'specsync.scanSync', title: 'Scan' };
+        scanItem.command = { command: 'specsync.scanSync', title: localize('command.scanSync') };
         items.push(scanItem);
         
-        const welcomeItem = new SpecSyncTreeItem('Open Welcome Page', vscode.TreeItemCollapsibleState.None, 'summary');
+        const welcomeItem = new SpecSyncTreeItem(localize('tree.action.welcome'), vscode.TreeItemCollapsibleState.None, 'summary');
         welcomeItem.iconPath = new vscode.ThemeIcon('book');
-        welcomeItem.command = { command: 'specsync.showWelcome', title: 'Welcome' };
+        welcomeItem.command = { command: 'specsync.showWelcome', title: localize('command.showWelcome') };
         items.push(welcomeItem);
 
         return items;

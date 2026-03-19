@@ -1,5 +1,6 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
+import { localize } from './i18n';
 import { CodeParser } from './parser/codeParser';
 import { SpecParser } from './parser/specParser';
 import { SpecSyncTreeProvider } from './panel/treeProvider';
@@ -14,7 +15,7 @@ const EXCLUDE_GLOB = '**/{node_modules,out,dist,.git}/**';
 export async function activate(context: vscode.ExtensionContext) {
     // 显示欢迎页面（首次使用）
     await showWelcomePage(context);
-    
+
     const treeProvider = new SpecSyncTreeProvider();
     const treeView = vscode.window.createTreeView('specsync.view', {
         treeDataProvider: treeProvider,
@@ -30,7 +31,7 @@ export async function activate(context: vscode.ExtensionContext) {
         const result = await vscode.window.withProgress(
             {
                 location: vscode.ProgressLocation.Notification,
-                title: 'SpecSync 正在扫描工作区',
+                title: localize('scan.progress.title'),
                 cancellable: false
             },
             async () => scanWorkspace(resource)
@@ -42,19 +43,19 @@ export async function activate(context: vscode.ExtensionContext) {
         await vscode.commands.executeCommand('workbench.view.explorer');
 
         if (result.specCount === 0) {
-            void vscode.window.showWarningMessage('未找到 Spec 文件，请检查 specsync.specPatterns 配置。');
+            void vscode.window.showWarningMessage(localize('scan.noSpecFiles'));
             return;
         }
 
         void vscode.window.showInformationMessage(
-            `扫描完成：${result.specCount} 个 Spec，发现 ${result.summary.total} 个问题（高 ${result.summary.high} / 中 ${result.summary.medium} / 低 ${result.summary.low}）。`
+            localize('scan.complete.message', result.specCount, result.summary.total, result.summary.high, result.summary.medium, result.summary.low)
         );
     };
 
     const showPanel = vscode.commands.registerCommand('specsync.showPanel', async () => {
         await vscode.commands.executeCommand('workbench.view.explorer');
         if (treeProvider.isEmpty()) {
-            void vscode.window.showInformationMessage('SpecSync 视图已打开，运行 “SpecSync: Scan Sync” 开始扫描。');
+            void vscode.window.showInformationMessage(localize('info.panel.opened'));
         }
     });
 
@@ -265,7 +266,7 @@ function createMissingCodeIssue(specFile: vscode.Uri, specContent: string): Scan
         spec: vscode.workspace.asRelativePath(specFile),
         code: 'missing',
         severity: 'high',
-        message: `未找到对应代码文件：${baseName}.{ts,tsx,js,jsx,py,java,kt,kts}`,
+        message: localize('issue.missing.code', baseName, '{ts,tsx,js,jsx,py,java,kt,kts}'),
         specFile,
         specLocation,
         target: locateByPatterns(specFile, specContent, [`## API:`, baseName]) ?? specLocation
@@ -402,14 +403,14 @@ function summarize(issues: ScanIssue[]): ScanResult['summary'] {
 
 function buildTreeMessage(result: ScanResult): string {
     if (result.specCount === 0) {
-        return '未找到可扫描的 Spec 文件';
+        return localize('scan.tree.noSpecFiles');
     }
 
     if (result.summary.total === 0) {
-        return `已扫描 ${result.specCount} 个 Spec，未发现不一致项`;
+        return localize('scan.tree.noIssues', result.specCount);
     }
 
-    return `已扫描 ${result.specCount} 个 Spec`;
+    return localize('scan.tree.scanned', result.specCount);
 }
 
 async function openIssueLocation(location: ScanIssueLocation): Promise<void> {
