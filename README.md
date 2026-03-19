@@ -21,27 +21,41 @@
 <a name="english"></a>
 ## 🇺🇸 English
 
-### The Problem
+### What is SpecSync?
 
-According to [Postman's State of the API 2025](https://www.postman.com/state-of-api/2025/), **55% of developers struggle with inconsistent documentation** - making it the #1 pain point in API development.
+SpecSync is a **VS Code extension** that automatically detects inconsistencies between your API documentation (Spec files) and code implementation.
 
-**The Cost:**
-- Hours wasted debugging integration failures
-- Production incidents caused by outdated docs
-- Lost trust between frontend and backend teams
+**Example:**
+```markdown
+<!-- login.spec.md -->
+### Request
+- username: string (6-20 characters)
+- password: string (required)
+```
 
-### The Solution
+```typescript
+// login.ts
+interface LoginRequest {
+    username: string;
+    // ❌ Missing 'password' field - SpecSync will warn you!
+}
+```
 
-SpecSync detects inconsistencies between your API documentation (Spec) and code implementation **in real-time, as you type** - before they become production issues.
+### Why SpecSync?
+
+- 📉 **55% of developers** struggle with outdated API documentation
+- ⏱️ **2-8 hours** wasted per documentation inconsistency
+- 🐛 **Production bugs** caused by docs not matching code
 
 ### ✨ Features
 
-- 🔍 **Real-time Detection** - Instant feedback when you save files
-- 📊 **Multi-language Support** - TypeScript, Python, Java/Kotlin
-- 🎯 **AST Deep Analysis** - Detects validation logic (not just comments)
-- 📝 **Decorator Support** - `@Spec`, `@Validate`, `@Rule` annotations
-- 🔄 **CI/CD Integration** - GitHub Actions, GitLab CI plugins (Pro)
-- 👥 **Team Collaboration** - Shared workspace configs (Pro)
+| Feature | Description |
+|---------|-------------|
+| 🔍 **Real-time Detection** | Auto-scan when you save files |
+| 📊 **Multi-language** | TypeScript, Python, Java, Kotlin |
+| 🎯 **Deep Analysis** | AST-based validation detection |
+| 📍 **Click to Navigate** | Jump directly to issue locations |
+| 🚀 **Zero Config** | Works out of the box |
 
 ### 🚀 Quick Start
 

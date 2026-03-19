@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 
-export async function showWelcomePage(context: vscode.ExtensionContext): Promise<void> {
+export async function showWelcomePage(context: vscode.ExtensionContext, force: boolean = false): Promise<void> {
     const hasShownWelcome = context.globalState.get<boolean>('specsync.welcomeShown', false);
     
-    if (hasShownWelcome) {
+    if (hasShownWelcome && !force) {
         return;
     }
     

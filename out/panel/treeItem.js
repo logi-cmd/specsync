@@ -31,103 +31,97 @@ class SpecSyncTreeItem extends vscode.TreeItem {
         this.kind = kind;
         this.issue = issue;
     }
-    static summary(label, value, iconId) {
+    // Header section
+    static header(title, description) {
+        const item = new SpecSyncTreeItem(title, vscode.TreeItemCollapsibleState.None, 'header');
+        item.description = description;
+        item.iconPath = new vscode.ThemeIcon('dashboard');
+        return item;
+    }
+    // Summary stat
+    static stat(label, value, iconId) {
         const item = new SpecSyncTreeItem(label, vscode.TreeItemCollapsibleState.None, 'summary');
         item.description = value;
         item.iconPath = new vscode.ThemeIcon(iconId);
         return item;
     }
-    static category(label, count, iconId) {
-        const item = new SpecSyncTreeItem(`${label} (${count})`, vscode.TreeItemCollapsibleState.Collapsed, 'category');
-        item.iconPath = new vscode.ThemeIcon(iconId);
+    // Category (expandable)
+    static category(label, count, severity) {
+        const icons = {
+            high: 'error',
+            medium: 'warning',
+            low: 'info'
+        };
+        const colors = {
+            high: new vscode.ThemeColor('problemsErrorIcon.foreground'),
+            medium: new vscode.ThemeColor('problemsWarningIcon.foreground'),
+            low: new vscode.ThemeColor('problemsInfoIcon.foreground')
+        };
+        const item = new SpecSyncTreeItem(`${label}`, vscode.TreeItemCollapsibleState.Expanded, 'category');
+        item.description = `${count} issues`;
+        item.iconPath = new vscode.ThemeIcon(icons[severity], colors[severity]);
         return item;
     }
+    // Empty state
     static empty(message) {
         const item = new SpecSyncTreeItem(message, vscode.TreeItemCollapsibleState.None, 'empty');
-        item.iconPath = new vscode.ThemeIcon('info');
+        item.iconPath = new vscode.ThemeIcon('pass');
         return item;
     }
+    // Issue item
     static issue(issue) {
-        const shortMessage = issue.message.length > 50
-            ? issue.message.substring(0, 50) + '...'
+        // Shorten message for display
+        const displayText = issue.message.length > 45
+            ? issue.message.substring(0, 45) + '...'
             : issue.message;
-        const item = new SpecSyncTreeItem(shortMessage, vscode.TreeItemCollapsibleState.None, 'issue', issue);
+        const item = new SpecSyncTreeItem(displayText, vscode.TreeItemCollapsibleState.None, 'issue', issue);
+        // Get file path
         const targetPath = issue.codeFile
             ? vscode.workspace.asRelativePath(issue.codeFile)
             : vscode.workspace.asRelativePath(issue.specFile);
-        item.description = `${severityShort(issue.severity)} ${targetPath}`;
-        const lines = [
-            `**${severityLabel(issue.severity)}: ${issue.message}**`,
-            '',
-            `Type: ${issueTypeLabel(issue.type)}`,
-            '',
-            `Spec: \`${vscode.workspace.asRelativePath(issue.specFile)}\``,
+        // Format description: [H] filename.ts
+        const severityMark = issue.severity === 'high' ? '[H]' :
+            issue.severity === 'medium' ? '[M]' : '[L]';
+        item.description = `${severityMark} ${targetPath}`;
+        // Detailed tooltip
+        const tooltipLines = [
+            `$(error) ${issue.message}`,
+            ``,
+            `**Type:** ${formatIssueType(issue.type)}`,
+            `**Severity:** ${issue.severity.toUpperCase()}`,
+            ``,
+            `📄 Spec: ${vscode.workspace.asRelativePath(issue.specFile)}`,
         ];
         if (issue.codeFile) {
-            lines.push(`Code: \`${vscode.workspace.asRelativePath(issue.codeFile)}\``);
+            tooltipLines.push(`💻 Code: ${vscode.workspace.asRelativePath(issue.codeFile)}`);
         }
-        lines.push('', 'Click to navigate to issue location');
-        item.tooltip = new vscode.MarkdownString(lines.join('\n'));
+        item.tooltip = new vscode.MarkdownString(tooltipLines.join('\n'));
         item.tooltip.isTrusted = true;
+        // Click to open
         item.command = {
             command: 'specsync.openIssue',
             title: 'Open Issue',
             arguments: [issue]
         };
-        item.contextValue = 'specsync.issue';
-        item.iconPath = new vscode.ThemeIcon(severityIcon(issue.severity), severityColor(issue.severity));
+        // Icon based on severity
+        const iconMap = {
+            high: 'error',
+            medium: 'warning',
+            low: 'info'
+        };
+        item.iconPath = new vscode.ThemeIcon(iconMap[issue.severity]);
         return item;
     }
 }
 exports.SpecSyncTreeItem = SpecSyncTreeItem;
-function severityLabel(severity) {
-    switch (severity) {
-        case 'high':
-            return '[HIGH]';
-        case 'medium':
-            return '[MED]';
-        case 'low':
-            return '[LOW]';
-    }
-}
-function severityShort(severity) {
-    switch (severity) {
-        case 'high':
-            return '[H]';
-        case 'medium':
-            return '[M]';
-        case 'low':
-            return '[L]';
-    }
-}
-function severityIcon(severity) {
-    switch (severity) {
-        case 'high':
-            return 'error';
-        case 'medium':
-            return 'warning';
-        case 'low':
-            return 'info';
-    }
-}
-function severityColor(severity) {
-    switch (severity) {
-        case 'high':
-            return new vscode.ThemeColor('problemsErrorIcon.foreground');
-        case 'medium':
-            return new vscode.ThemeColor('problemsWarningIcon.foreground');
-        case 'low':
-            return new vscode.ThemeColor('problemsInfoIcon.foreground');
-    }
-}
-function issueTypeLabel(type) {
-    const labels = {
-        'api_missing': 'API Missing',
+function formatIssueType(type) {
+    const typeMap = {
+        'api_missing': 'API Not Implemented',
         'field_missing': 'Field Missing',
         'type_mismatch': 'Type Mismatch',
         'constraint_missing': 'Constraint Not Implemented',
         'rule_not_implemented': 'Rule Not Implemented'
     };
-    return labels[type] || type;
+    return typeMap[type] || type;
 }
 //# sourceMappingURL=treeItem.js.map

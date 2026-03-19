@@ -71,10 +71,13 @@ async function activate(context) {
     const scanSync = vscode.commands.registerCommand('specsync.scanSync', async (resource) => {
         await runScan(resource);
     });
+    const showWelcome = vscode.commands.registerCommand('specsync.showWelcome', async () => {
+        await (0, welcome_1.showWelcomePage)(context, true); // true = force show
+    });
     const openIssue = vscode.commands.registerCommand('specsync.openIssue', async (issue) => {
         await openIssueLocation(issue.target);
     });
-    context.subscriptions.push(treeView, showPanel, scanSync, openIssue, vscode.workspace.onDidSaveTextDocument(async (document) => {
+    context.subscriptions.push(treeView, showPanel, scanSync, showWelcome, openIssue, vscode.workspace.onDidSaveTextDocument(async (document) => {
         const config = vscode.workspace.getConfiguration('specsync');
         if (config.get('autoScanOnSave', false)) {
             if (isSpecFile(document.uri) || isCodeFile(document.uri)) {

@@ -1,46 +1,56 @@
 # Changelog
 
-All notable changes to the SpecSync extension will be documented in this file.
+All notable changes to SpecSync will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+
+## [Unreleased]
+
+### Planned
+- [ ] CLI tool for CI/CD integration
+- [ ] Team collaboration features
+- [ ] Support for more languages (Go, Rust)
+- [ ] Auto-fix suggestions
+- [ ] Web dashboard for analytics
+
+## [0.0.3] - 2026-03-20
+
+### Added
+- **Welcome Page Command**: Added `SpecSync: Show Welcome Page` command to manually open welcome page
+- **UI Improvements**: 
+  - Theme-aware welcome page (dark/light mode support)
+  - Categorized issue display in panel (HIGH/MED/LOW)
+  - Enhanced tooltips with Markdown formatting
+  - Better visual hierarchy in tree view
+
+### Changed
+- Improved panel layout with collapsible severity categories
+- Updated severity labels to use [H]/[M]/[L] format for clarity
 
 ## [0.0.2] - 2026-03-20
 
 ### Fixed
-- **Critical**: Added `typescript` to dependencies to fix "Cannot find module 'typescript'" error
-- Extension now activates correctly after installation
+- **Critical**: Added `typescript` to dependencies to fix activation error
+- Extension now loads correctly after installation
 
 ### Changed
-- Package size increased to include TypeScript compiler for AST parsing
-- Updated publisher ID from `specsync` to `logi-cmd`
+- Package now includes TypeScript compiler (11.88MB)
+- Publisher ID updated to `logi-cmd`
 
 ## [0.0.1] - 2026-03-19
 
 ### Added
 - **Initial Release**: SpecSync VS Code Extension
-- **Multi-language Support**: TypeScript, Python, Java, Kotlin
-- **AST Deep Analysis**: Detect validation logic in code
-- **Real-time Sync Detection**: Find inconsistencies between Spec and Code
-- **5 Inconsistency Types**:
-  - API missing
-  - Field missing
-  - Type mismatch
-  - Constraint not implemented
-  - Business rule not implemented
-- **VS Code Integration**: Native tree view panel
-- **Welcome Page**: First-time user guide
-- **Auto-scan on Save**: Optional automatic scanning
-- **Click to Navigate**: Jump to issue locations
+- **Core Features**:
+  - Detect API documentation inconsistencies
+  - Support TypeScript, Python, Java, Kotlin
+  - AST-based code analysis
+  - Real-time scanning on file save
+  - VS Code panel integration
+- **5 Detection Types**:
+  - API implementation missing
+  - Request/response field missing
+  - Type mismatch between spec and code
+  - Constraints not implemented
+  - Business rules not implemented
 - **Examples**: Login API and User API samples
-
-### Features
-- Spec file pattern: `**/*.spec.md` and `**/spec/*.md`
-- Support for decorators: `@Spec`, `@Validate`, `@Rule`
-- Risk levels: High, Medium, Low
-- Configuration options in VS Code settings
-
-### Technical
-- TypeScript Compiler API for AST parsing
-- Language Parser architecture for extensibility
-- 97.6% test coverage
-- Performance: <50ms for 100 APIs

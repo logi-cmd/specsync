@@ -11,6 +11,7 @@ comprehensive-test.js
 performance-test.js
 test-kotlin.js
 test-run.js
+test-install.ps1
 
 # VS Code
 .vscode-test/
@@ -25,3 +26,13 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Internal documents (not for public)
+PROJECT_PLAN.md
+COMPATIBILITY_REPORT.md
+PERFORMANCE_REPORT.md
+CODEX_TASK.md
+TEST_REPORT.md
+benchmark.js
+visualize.js
+performance-report.json

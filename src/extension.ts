@@ -62,6 +62,10 @@ export async function activate(context: vscode.ExtensionContext) {
         await runScan(resource);
     });
 
+    const showWelcome = vscode.commands.registerCommand('specsync.showWelcome', async () => {
+        await showWelcomePage(context, true); // true = force show
+    });
+
     const openIssue = vscode.commands.registerCommand('specsync.openIssue', async (issue: ScanIssue) => {
         await openIssueLocation(issue.target);
     });
@@ -70,6 +74,7 @@ export async function activate(context: vscode.ExtensionContext) {
         treeView,
         showPanel,
         scanSync,
+        showWelcome,
         openIssue,
         vscode.workspace.onDidSaveTextDocument(async document => {
             const config = vscode.workspace.getConfiguration('specsync');
