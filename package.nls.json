@@ -1,0 +1,11 @@
+{
+  "displayName": "SpecSync",
+  "description": "Keep your API specs and code in sync. Detect inconsistencies in real-time.",
+  "command.showPanel": "SpecSync: Show Panel",
+  "command.scanSync": "SpecSync: Scan Sync",
+  "command.showWelcome": "SpecSync: Show Welcome Page",
+  "view.name": "SpecSync",
+  "config.specPatterns.description": "Glob patterns used to discover Spec files in the workspace.",
+  "config.autoScan.description": "Automatically run a workspace scan when the extension activates.",
+  "config.autoScanOnSave.description": "Automatically scan when files are saved."
+}

@@ -13,6 +13,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - [ ] Auto-fix suggestions
 - [ ] Web dashboard for analytics
 
+## [0.0.6] - 2026-03-20
+
+### Added
+- **Internationalization (i18n)**: Full support for English and Chinese
+  - Auto-detects VS Code language setting
+  - All UI elements translated (commands, panels, messages, welcome page)
+  - Easy to add more languages
+
 ## [0.0.5] - 2026-03-20
 
 ### Changed

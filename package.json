@@ -1,8 +1,8 @@
 {
   "name": "specsync",
-  "displayName": "SpecSync",
-  "description": "Scan Markdown specs and source code for synchronization gaps.",
-  "version": "0.0.5",
+  "displayName": "%displayName%",
+  "description": "%description%",
+  "version": "0.0.6",
   "publisher": "logi-cmd",
   "repository": {
     "type": "git",
@@ -34,17 +34,17 @@
     "commands": [
       {
         "command": "specsync.showPanel",
-        "title": "SpecSync: Show Panel",
+        "title": "%command.showPanel%",
         "category": "SpecSync"
       },
       {
         "command": "specsync.scanSync",
-        "title": "SpecSync: Scan Sync",
+        "title": "%command.scanSync%",
         "category": "SpecSync"
       },
       {
         "command": "specsync.showWelcome",
-        "title": "SpecSync: Show Welcome Page",
+        "title": "%command.showWelcome%",
         "category": "SpecSync"
       }
     ],
@@ -52,7 +52,7 @@
       "explorer": [
         {
           "id": "specsync.view",
-          "name": "SpecSync",
+          "name": "%view.name%",
           "when": "workspaceHasSpecFiles"
         }
       ]
@@ -90,12 +90,17 @@
             "**/*.spec.md",
             "**/spec/*.md"
           ],
-          "description": "Glob patterns used to discover Spec files in the workspace."
+          "description": "%config.specPatterns.description%"
         },
         "specsync.autoScan": {
           "type": "boolean",
           "default": false,
-          "description": "Automatically run a workspace scan when the extension activates."
+          "description": "%config.autoScan.description%"
+        },
+        "specsync.autoScanOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "%config.autoScanOnSave.description%"
         }
       }
     }
@@ -117,7 +122,7 @@
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
-    "yaml": "^2.3.0",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "yaml": "^2.3.0"
   }
 }

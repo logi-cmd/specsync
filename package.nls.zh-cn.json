@@ -1,0 +1,11 @@
+{
+  "displayName": "SpecSync",
+  "description": "保持 API 规范与代码同步，实时检测不一致问题。",
+  "command.showPanel": "SpecSync: 显示面板",
+  "command.scanSync": "SpecSync: 扫描同步",
+  "command.showWelcome": "SpecSync: 显示欢迎页",
+  "view.name": "SpecSync",
+  "config.specPatterns.description": "用于在工作区中发现 Spec 文件的全局模式。",
+  "config.autoScan.description": "扩展激活时自动运行工作区扫描。",
+  "config.autoScanOnSave.description": "保存文件时自动扫描。"
+}
