@@ -8,6 +8,13 @@
   "welcome.title": "Welcome to SpecSync",
   "welcome.panel.title": "Welcome",
   "issue.missing.code": "Code file not found: {0}.{1}",
+  "issue.api.missing": "API implementation not found: {0}",
+  "issue.field.missing": "{0} field missing: {1}",
+  "issue.type.mismatch": "Type mismatch: {0} (spec: {1}, code: {2})",
+  "issue.constraint.missing": "Constraint not implemented: {0} ({1})",
+  "issue.rule.missing": "Business rule may not be implemented: {0}",
+  "label.request": "Request",
+  "label.response": "Response",
   "error.create.example": "Please open a workspace first",
   "info.panel.opened": "SpecSync panel opened, run 'SpecSync: Scan Sync' to start scanning.",
   "info.example.created": "Example files created! Run 'SpecSync: Scan Sync' to start detection.",
@@ -25,5 +32,10 @@
   "tree.status.start": "Run 'SpecSync: Scan Sync' to start",
   "tree.section.actions": "QUICK ACTIONS",
   "tree.action.scan": "Scan Workspace",
-  "tree.action.welcome": "Open Welcome Page"
+  "tree.action.welcome": "Open Welcome Page",
+  "issue.type.api_missing": "API Not Implemented",
+  "issue.type.field_missing": "Field Missing",
+  "issue.type.type_mismatch": "Type Mismatch",
+  "issue.type.constraint_missing": "Constraint Not Implemented",
+  "issue.type.rule_not_implemented": "Rule Not Implemented"
 }

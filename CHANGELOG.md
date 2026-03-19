@@ -13,6 +13,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - [ ] Auto-fix suggestions
 - [ ] Web dashboard for analytics
 
+## [0.0.7] - 2026-03-20
+
+### Fixed
+- **Complete Internationalization**: Fixed remaining hardcoded Chinese strings in sync engine
+  - API missing messages
+  - Field missing messages  
+  - Type mismatch messages
+  - Constraint missing messages
+  - Business rule messages
+  - Issue type labels
+
 ## [0.0.6] - 2026-03-20
 
 ### Added

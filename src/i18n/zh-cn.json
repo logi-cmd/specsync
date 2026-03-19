@@ -8,6 +8,13 @@
   "welcome.title": "欢迎使用 SpecSync",
   "welcome.panel.title": "欢迎",
   "issue.missing.code": "未找到对应代码文件：{0}.{1}",
+  "issue.api.missing": "未找到API实现：{0}",
+  "issue.field.missing": "{0}字段缺失：{1}",
+  "issue.type.mismatch": "类型不匹配：{0} (spec: {1}, code: {2})",
+  "issue.constraint.missing": "字段约束未实现：{0} ({1})",
+  "issue.rule.missing": "业务规则可能未实现：{0}",
+  "label.request": "请求",
+  "label.response": "响应",
   "error.create.example": "请先打开一个工作区",
   "info.panel.opened": "SpecSync 视图已打开，运行 'SpecSync: 扫描同步' 开始扫描。",
   "info.example.created": "示例文件已创建！运行 'SpecSync: 扫描同步' 开始检测。",
@@ -25,5 +32,10 @@
   "tree.status.start": "运行 'SpecSync: 扫描同步' 开始",
   "tree.section.actions": "快速操作",
   "tree.action.scan": "扫描工作区",
-  "tree.action.welcome": "打开欢迎页"
+  "tree.action.welcome": "打开欢迎页",
+  "issue.type.api_missing": "API未实现",
+  "issue.type.field_missing": "字段缺失",
+  "issue.type.type_mismatch": "类型不匹配",
+  "issue.type.constraint_missing": "约束未实现",
+  "issue.type.rule_not_implemented": "规则未实现"
 }

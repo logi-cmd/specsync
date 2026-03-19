@@ -1,5 +1,6 @@
 import { CodeApiBinding, CodeDocument, CodeFunction, CodeInterface, CodeValidation } from '../parser/codeParser';
 import { SpecAPI, SpecDocument, SpecField } from '../parser/specParser';
+import { localize } from '../i18n';
 
 export interface Inconsistency {
     type: 'field_missing' | 'type_mismatch' | 'constraint_missing' | 'api_missing' | 'rule_not_implemented';
@@ -47,7 +48,7 @@ export class SyncEngine {
                 spec: `${api.method} ${api.path}`,
                 code: 'missing',
                 severity: 'high',
-                message: `未找到API实现: ${this.inferFunctionName(api.path)}`
+                message: localize('issue.api.missing', this.inferFunctionName(api.path))
             });
             return inconsistencies;
         }
@@ -55,8 +56,8 @@ export class SyncEngine {
         const requestShape = this.findPayloadShape(api, code, codeFunc, 'request');
         const responseShape = this.findPayloadShape(api, code, codeFunc, 'response');
 
-        inconsistencies.push(...this.checkFields(api.path, api.request, requestShape, code, codeFunc, '请求'));
-        inconsistencies.push(...this.checkFields(api.path, api.response, responseShape, code, codeFunc, '响应'));
+        inconsistencies.push(...this.checkFields(api.path, api.request, requestShape, code, codeFunc, localize('label.request')));
+        inconsistencies.push(...this.checkFields(api.path, api.response, responseShape, code, codeFunc, localize('label.response')));
         inconsistencies.push(...this.checkRules(api.rules, code, codeFunc));
 
         return inconsistencies;
@@ -117,7 +118,7 @@ export class SyncEngine {
         payloadShape: CodeInterface | undefined,
         code: CodeDocument,
         codeFunc: CodeFunction,
-        label: '请求' | '响应'
+        label: string
     ): Inconsistency[] {
         const inconsistencies: Inconsistency[] = [];
 
@@ -132,7 +133,7 @@ export class SyncEngine {
                     spec: `${apiPath} - ${specField.name}`,
                     code: 'missing',
                     severity: 'high',
-                    message: `${label}字段缺失: ${specField.name}`
+                    message: localize('issue.field.missing', label, specField.name)
                 });
                 continue;
             }
@@ -143,7 +144,7 @@ export class SyncEngine {
                     spec: `${specField.name}: ${specField.type}`,
                     code: `${codeField.name}: ${codeField.type}`,
                     severity: 'medium',
-                    message: `类型不匹配: ${specField.name} (spec: ${specField.type}, code: ${codeField.type})`
+                    message: localize('issue.type.mismatch', specField.name, specField.type, codeField.type)
                 });
             }
 
@@ -154,7 +155,7 @@ export class SyncEngine {
                         spec: `${specField.name} (${constraint})`,
                         code: 'no matching validation found',
                         severity: 'medium',
-                        message: `字段约束未实现: ${specField.name} (${constraint})`
+                        message: localize('issue.constraint.missing', specField.name, constraint)
                     });
                 }
             }
@@ -242,7 +243,7 @@ export class SyncEngine {
                     spec: rule,
                     code: 'no implementation found',
                     severity: 'low',
-                    message: `业务规则可能未实现: ${rule}`
+                    message: localize('issue.rule.missing', rule)
                 });
             }
         }

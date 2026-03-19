@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { localize } from '../i18n';
 import { ScanIssue } from './types';
 
 export class SpecSyncTreeItem extends vscode.TreeItem {
@@ -114,11 +115,11 @@ export class SpecSyncTreeItem extends vscode.TreeItem {
 
 function formatIssueType(type: string): string {
     const typeMap: Record<string, string> = {
-        'api_missing': 'API Not Implemented',
-        'field_missing': 'Field Missing',
-        'type_mismatch': 'Type Mismatch',
-        'constraint_missing': 'Constraint Not Implemented',
-        'rule_not_implemented': 'Rule Not Implemented'
+        'api_missing': localize('issue.type.api_missing'),
+        'field_missing': localize('issue.type.field_missing'),
+        'type_mismatch': localize('issue.type.type_mismatch'),
+        'constraint_missing': localize('issue.type.constraint_missing'),
+        'rule_not_implemented': localize('issue.type.rule_not_implemented')
     };
     return typeMap[type] || type;
 }
