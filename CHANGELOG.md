@@ -13,6 +13,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - [ ] Auto-fix suggestions
 - [ ] Web dashboard for analytics
 
+## [0.0.5] - 2026-03-20
+
+### Changed
+- **README**: Fix incorrect links and remove misleading information
+  - Fix badge URLs to point to correct repository (logi-cmd/specsync)
+  - Remove fake contact information (email, Discord)
+  - Remove Pro version mentions and specific timeline promises
+  - Simplify roadmap to avoid over-promising
+
+## [0.0.4] - 2026-03-20
+
+### Added
+- **Welcome Page Command**: Added `SpecSync: Show Welcome Page` command
+- **Panel Redesign**: Modular layout with sections
+  - SCAN OVERVIEW section
+  - ISSUES BY SEVERITY section (expandable categories)
+  - QUICK ACTIONS section
+- Improved issue display with [H]/[M]/[L] labels
+
 ## [0.0.3] - 2026-03-20
 
 ### Added
