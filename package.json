@@ -1,0 +1,105 @@
+{
+  "name": "specsync",
+  "displayName": "SpecSync",
+  "description": "Scan Markdown specs and source code for synchronization gaps.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:specsync.showPanel",
+    "onCommand:specsync.scanSync",
+    "onView:specsync.view",
+    "workspaceContains:**/*.spec.md",
+    "workspaceContains:**/spec/*.md"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "specsync.showPanel",
+        "title": "SpecSync: Show Panel",
+        "category": "SpecSync"
+      },
+      {
+        "command": "specsync.scanSync",
+        "title": "SpecSync: Scan Sync",
+        "category": "SpecSync"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "specsync.view",
+          "name": "SpecSync",
+          "when": "workspaceHasSpecFiles"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "specsync.scanSync",
+          "when": "view == specsync.view",
+          "group": "navigation"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "specsync.scanSync",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "specsync.scanSync",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "SpecSync",
+      "properties": {
+        "specsync.specPatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "**/*.spec.md",
+            "**/spec/*.md"
+          ],
+          "description": "Glob patterns used to discover Spec files in the workspace."
+        },
+        "specsync.autoScan": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically run a workspace scan when the extension activates."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/node": "16.x",
+    "@types/vscode": "^1.74.0",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "eslint": "^8.28.0",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "yaml": "^2.3.0"
+  }
+}
