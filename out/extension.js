@@ -30,10 +30,13 @@ const codeParser_1 = require("./parser/codeParser");
 const specParser_1 = require("./parser/specParser");
 const treeProvider_1 = require("./panel/treeProvider");
 const syncEngine_1 = require("./sync/syncEngine");
+const welcome_1 = require("./welcome");
 const DEFAULT_SPEC_PATTERNS = ['**/*.spec.md', '**/spec/*.md'];
-const CODE_EXTENSIONS = ['ts', 'tsx', 'js', 'jsx'];
+const CODE_EXTENSIONS = ['ts', 'tsx', 'js', 'jsx', 'py', 'java', 'kt', 'kts'];
 const EXCLUDE_GLOB = '**/{node_modules,out,dist,.git}/**';
 async function activate(context) {
+    // 显示欢迎页面（首次使用）
+    await (0, welcome_1.showWelcomePage)(context);
     const treeProvider = new treeProvider_1.SpecSyncTreeProvider();
     const treeView = vscode.window.createTreeView('specsync.view', {
         treeDataProvider: treeProvider,
@@ -71,7 +74,14 @@ async function activate(context) {
     const openIssue = vscode.commands.registerCommand('specsync.openIssue', async (issue) => {
         await openIssueLocation(issue.target);
     });
-    context.subscriptions.push(treeView, showPanel, scanSync, openIssue, vscode.workspace.onDidChangeConfiguration(async (event) => {
+    context.subscriptions.push(treeView, showPanel, scanSync, openIssue, vscode.workspace.onDidSaveTextDocument(async (document) => {
+        const config = vscode.workspace.getConfiguration('specsync');
+        if (config.get('autoScanOnSave', false)) {
+            if (isSpecFile(document.uri) || isCodeFile(document.uri)) {
+                await runScan();
+            }
+        }
+    }), vscode.workspace.onDidChangeConfiguration(async (event) => {
         if (event.affectsConfiguration('specsync.specPatterns')) {
             await refreshContext();
         }
@@ -109,7 +119,7 @@ async function scanWorkspace(resource) {
             continue;
         }
         const codeContent = await readFile(codeFile);
-        const report = syncEngine.check(specDoc, codeParser.parse(codeContent));
+        const report = syncEngine.check(specDoc, codeParser.parse(codeContent, codeFile.fsPath));
         issues.push(...mapIssues(report.inconsistencies, specFile, specContent, codeFile, codeContent));
     }
     return {
@@ -216,7 +226,7 @@ function createMissingCodeIssue(specFile, specContent) {
         spec: vscode.workspace.asRelativePath(specFile),
         code: 'missing',
         severity: 'high',
-        message: `未找到对应代码文件：${baseName}.{ts,tsx,js,jsx}`,
+        message: `未找到对应代码文件：${baseName}.{ts,tsx,js,jsx,py,java,kt,kts}`,
         specFile,
         specLocation,
         target: locateByPatterns(specFile, specContent, [`## API:`, baseName]) ?? specLocation
@@ -270,7 +280,13 @@ function locateCodeIssue(codeFile, content, issue) {
         case 'api_missing': {
             const functionName = issue.message.split(':').pop()?.trim();
             return functionName
-                ? locateByPatterns(codeFile, content, [`function ${functionName}`, `${functionName}(`]) ?? firstLine(codeFile)
+                ? locateByPatterns(codeFile, content, [
+                    '@Spec(',
+                    `function ${functionName}`,
+                    `def ${functionName}`,
+                    `fun ${functionName}`,
+                    `${functionName}(`
+                ]) ?? firstLine(codeFile)
                 : firstLine(codeFile);
         }
         case 'field_missing':
@@ -338,5 +354,9 @@ async function openIssueLocation(location) {
     const position = new vscode.Position(Math.max(location.line - 1, 0), Math.max((location.column ?? 1) - 1, 0));
     editor.selection = new vscode.Selection(position, position);
     editor.revealRange(new vscode.Range(position, position), vscode.TextEditorRevealType.InCenter);
+}
+function isCodeFile(uri) {
+    const ext = path.extname(uri.fsPath).toLowerCase();
+    return ['.ts', '.tsx', '.js', '.jsx', '.py', '.java', '.kt', '.kts'].includes(ext);
 }
 //# sourceMappingURL=extension.js.map

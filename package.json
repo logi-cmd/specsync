@@ -3,11 +3,24 @@
   "displayName": "SpecSync",
   "description": "Scan Markdown specs and source code for synchronization gaps.",
   "version": "0.0.1",
+  "publisher": "specsync",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/specsync/specsync"
+  },
   "engines": {
     "vscode": "^1.74.0"
   },
   "categories": [
     "Other"
+  ],
+  "keywords": [
+    "api",
+    "documentation",
+    "spec",
+    "openapi",
+    "swagger",
+    "sync"
   ],
   "activationEvents": [
     "onCommand:specsync.showPanel",
