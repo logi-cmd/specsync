@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- 背景 -->
+  <rect width="128" height="128" rx="20" fill="#1976d2"/>
+  
+  <!-- 文档图标 -->
+  <rect x="34" y="28" width="40" height="50" rx="4" fill="white"/>
+  <line x1="42" y1="42" x2="66" y2="42" stroke="#1976d2" stroke-width="3" stroke-linecap="round"/>
+  <line x1="42" y1="52" x2="66" y2="52" stroke="#1976d2" stroke-width="3" stroke-linecap="round"/>
+  <line x1="42" y1="62" x2="58" y2="62" stroke="#1976d2" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- 同步箭头 -->
+  <circle cx="78" cy="78" r="22" fill="white" opacity="0.9"/>
+  <path d="M 70 78 L 78 70 L 86 78" stroke="#1976d2" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 70 86 L 78 78 L 86 86" stroke="#1976d2" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="rotate(180 78 82)"/>
+  
+  <!-- 小点装饰 -->
+  <circle cx="44" cy="90" r="3" fill="white" opacity="0.6"/>
+  <circle cx="54" cy="95" r="2" fill="white" opacity="0.4"/>
+</svg>

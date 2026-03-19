@@ -2,11 +2,11 @@
   "name": "specsync",
   "displayName": "SpecSync",
   "description": "Scan Markdown specs and source code for synchronization gaps.",
-  "version": "0.0.1",
-  "publisher": "specsync",
+  "version": "0.0.2",
+  "publisher": "logi-cmd",
   "repository": {
     "type": "git",
-    "url": "https://github.com/specsync/specsync"
+    "url": "https://github.com/logi-cmd/specsync"
   },
   "engines": {
     "vscode": "^1.74.0"
@@ -108,11 +108,11 @@
     "@types/vscode": "^1.74.0",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
-    "eslint": "^8.28.0",
-    "typescript": "^4.9.4"
+    "eslint": "^8.28.0"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
-    "yaml": "^2.3.0"
+    "yaml": "^2.3.0",
+    "typescript": "^4.9.4"
   }
 }
