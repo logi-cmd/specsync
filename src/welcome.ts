@@ -92,43 +92,117 @@ function getWelcomeContent(): string {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>欢迎使用 SpecSync</title>
     <style>
+        :root {
+            --vscode-foreground: var(--vscode-editor-foreground, #333);
+            --vscode-background: var(--vscode-editor-background, #fff);
+            --vscode-button-background: var(--vscode-button-background, #1976d2);
+            --vscode-button-foreground: var(--vscode-button-foreground, #fff);
+        }
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             padding: 40px;
             max-width: 800px;
             margin: 0 auto;
             line-height: 1.6;
-            color: #333;
+            color: var(--vscode-foreground);
+            background-color: var(--vscode-background);
         }
         h1 {
-            color: #1976d2;
-            border-bottom: 2px solid #1976d2;
+            color: var(--vscode-button-background);
+            border-bottom: 2px solid var(--vscode-button-background);
             padding-bottom: 10px;
         }
         h2 {
-            color: #424242;
+            color: var(--vscode-foreground);
             margin-top: 30px;
+            opacity: 0.9;
+        }
+        h3 {
+            color: var(--vscode-foreground);
+            opacity: 0.85;
         }
         .feature {
-            background: #f5f5f5;
+            background: var(--vscode-editor-inactiveSelectionBackground, #f5f5f5);
             padding: 15px;
             border-radius: 8px;
             margin: 15px 0;
+            border: 1px solid var(--vscode-panel-border, #e0e0e0);
         }
         .feature h3 {
             margin-top: 0;
-            color: #1976d2;
+            color: var(--vscode-button-background);
+            opacity: 1;
         }
         .button {
-            background: #1976d2;
-            color: white;
+            background: var(--vscode-button-background);
+            color: var(--vscode-button-foreground);
             border: none;
             padding: 12px 24px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
             margin: 5px;
+            font-weight: 500;
         }
+        .button:hover {
+            opacity: 0.9;
+        }
+        .button.secondary {
+            background: var(--vscode-button-secondaryBackground, #757575);
+            color: var(--vscode-button-secondaryForeground, #fff);
+        }
+        .steps {
+            counter-reset: step;
+        }
+        .step {
+            margin: 20px 0;
+            padding-left: 50px;
+            position: relative;
+            color: var(--vscode-foreground);
+        }
+        .step::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: var(--vscode-button-background);
+            color: var(--vscode-button-foreground);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        code {
+            background: var(--vscode-textCodeBlock-background, #e3f2fd);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: var(--vscode-button-background);
+        }
+        pre {
+            background: var(--vscode-editor-background);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid var(--vscode-panel-border, #e0e0e0);
+        }
+        pre code {
+            background: transparent;
+            padding: 0;
+        }
+        ul, ol {
+            color: var(--vscode-foreground);
+        }
+        li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
         .button:hover {
             background: #1565c0;
         }

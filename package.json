@@ -2,7 +2,7 @@
   "name": "specsync",
   "displayName": "SpecSync",
   "description": "Scan Markdown specs and source code for synchronization gaps.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "logi-cmd",
   "repository": {
     "type": "git",

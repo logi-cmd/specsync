@@ -32,33 +32,40 @@ export class SpecSyncTreeProvider implements vscode.TreeDataProvider<SpecSyncTre
 
     getChildren(element?: SpecSyncTreeItem): vscode.ProviderResult<SpecSyncTreeItem[]> {
         if (element) {
+            if (element.kind === 'category') {
+                const label = element.label?.toString() || '';
+                const severity = label.includes('HIGH') ? 'high' :
+                                label.includes('MED') ? 'medium' : 'low';
+                return this.result.issues
+                    .filter(issue => issue.severity === severity)
+                    .map(issue => SpecSyncTreeItem.issue(issue));
+            }
             return [];
         }
 
-        const summaryItems = [
-            SpecSyncTreeItem.summary('总问题数', String(this.result.summary.total), 'list-unordered'),
-            SpecSyncTreeItem.summary('高风险', String(this.result.summary.high), 'error'),
-            SpecSyncTreeItem.summary('中风险', String(this.result.summary.medium), 'warning'),
-            SpecSyncTreeItem.summary('低风险', String(this.result.summary.low), 'info')
-        ];
-
-        if (this.result.specCount === 0) {
-            return [
-                ...summaryItems,
-                SpecSyncTreeItem.empty('还没有扫描结果')
-            ];
+        if (this.result.specCount === 0 && this.result.summary.total === 0) {
+            return [SpecSyncTreeItem.empty('No scan results yet. Run "SpecSync: Scan Sync" to start')];
         }
 
-        if (this.result.issues.length === 0) {
-            return [
-                ...summaryItems,
-                SpecSyncTreeItem.empty('扫描完成，未发现不一致项')
-            ];
+        const items: SpecSyncTreeItem[] = [];
+
+        items.push(SpecSyncTreeItem.summary('Scan Summary', '', 'dashboard'));
+        items.push(SpecSyncTreeItem.summary('  Total Issues', String(this.result.summary.total), 'list-unordered'));
+
+        if (this.result.summary.high > 0) {
+            items.push(SpecSyncTreeItem.category('HIGH Risk', this.result.summary.high, 'error'));
+        }
+        if (this.result.summary.medium > 0) {
+            items.push(SpecSyncTreeItem.category('MED Risk', this.result.summary.medium, 'warning'));
+        }
+        if (this.result.summary.low > 0) {
+            items.push(SpecSyncTreeItem.category('LOW Risk', this.result.summary.low, 'info'));
         }
 
-        return [
-            ...summaryItems,
-            ...this.result.issues.map(issue => SpecSyncTreeItem.issue(issue))
-        ];
+        if (this.result.summary.total === 0) {
+            items.push(SpecSyncTreeItem.empty('No issues found - Code and Spec are in sync'));
+        }
+
+        return items;
     }
 }
